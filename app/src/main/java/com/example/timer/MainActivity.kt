@@ -15,7 +15,7 @@ import kotlin.concurrent.thread
 
 private const val TIMER_DEFAULT = 30
 
-class MainActivity : stop, AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private var handler = Handler(Looper.getMainLooper())
     private lateinit var titleText: CharSequence
     private lateinit var timerText: TextView
@@ -88,7 +88,7 @@ class MainActivity : stop, AppCompatActivity() {
     fun stopTimer(timer: Timer) {
         timer.stop()
         status = timer.getStatus()
-        stop()
+        reset()
     }
 
     fun pause(timer: Timer, v: View) {
@@ -102,11 +102,13 @@ class MainActivity : stop, AppCompatActivity() {
     }
 
 
-    override fun stop() {
-        slider.isEnabled = true
-        switch.isEnabled = true
-        buttonStop.setVisibility(View.GONE)
-        buttonStart.text = "start"
-        progressBar.progress = 0
+    fun reset() {
+        handler.post {
+            slider.isEnabled = true
+            switch.isEnabled = true
+            buttonStop.setVisibility(View.GONE)
+            buttonStart.text = "start"
+            progressBar.progress = 0
+        }
     }
 }

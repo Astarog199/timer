@@ -1,6 +1,7 @@
 package com.example.timer
 
 import android.os.Handler
+import android.view.View
 import com.example.timer.databinding.ActivityMainBinding
 
 class Timer(val binding: ActivityMainBinding) {
@@ -15,52 +16,47 @@ class Timer(val binding: ActivityMainBinding) {
     fun start(arg: Int) {
         status = true
         thread = Thread {
-                while (status) {
-                    if (!countdownMode) {
-                        increaseValue(arg)
-                        changeTimerText()
-                    } else {
-                        decreasingValue(arg)
-                        changeTimerText()
-                    }
-                    binding.progress.progress = timer
-                    Thread.sleep(1000)
+            while (status) {
+                if (!countdownMode) {
+                    increaseValue(arg)
+                    changeTimerText()
+                } else {
+                    decreasingValue(arg)
+                    changeTimerText()
                 }
+                binding.progress.progress = timer
+                Thread.sleep(1000)
             }
+        }
         thread.start()
     }
 
-    fun increaseValue(arg: Int){
+    fun increaseValue(arg: Int) {
         if (timer < arg && timer >= 0) {
             timer++
-        }else{
-            status = false
-//            binding.bar.isEnabled = true
-//            binding.switchTimer.isEnabled = true
-
+        } else {
+            reset()
         }
     }
 
-    fun decreasingValue(arg: Int){
+    fun decreasingValue(arg: Int) {
         if (timer <= arg && timer > 0) {
             timer--
-        }else{
-            status = false
-//            binding.bar.isEnabled = true
-//            binding.switchTimer.isEnabled = true
+        } else {
+            reset()
         }
     }
 
-    fun changeTimerText(){
+    fun changeTimerText() {
         handler.post {
             binding.timer.text = timer.toString()
         }
     }
 
-    fun setTimerValue(arg: Int){
-        timer = if (!countdownMode){
+    fun setTimerValue(arg: Int) {
+        timer = if (!countdownMode) {
             0
-        }else{
+        } else {
             arg
         }
     }
@@ -83,12 +79,23 @@ class Timer(val binding: ActivityMainBinding) {
         countdownMode = isChecked
         if (!countdownMode) {
             setTimerValue(timerValue)
-        }else{
+        } else {
             setTimerValue(timerValue)
         }
     }
 
-    fun setHandler(handler: Handler){
+    fun setHandler(handler: Handler) {
         this.handler = handler
+    }
+
+    fun reset(){
+        status = false
+        stop()
+        handler.post {
+            binding.start.text = "start"
+            binding.bar.isEnabled = true
+            binding.switchTimer.isEnabled = true
+            binding.stop.setVisibility(View.GONE)
+        }
     }
 }
