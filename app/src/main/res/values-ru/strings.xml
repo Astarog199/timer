@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Timer</string>
+    <string name="start">старт</string>
+    <string name="countdown_timer">Таймер обратного отсчета</string>
+
+</resources>
