@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.timer.databinding.ActivityMainBinding
 import com.google.android.material.slider.Slider
+import java.util.Locale
 import kotlin.concurrent.thread
 
 private const val TIMER_DEFAULT = 30
@@ -71,44 +72,78 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    fun start(timer: Timer, v: View) {
-        buttonStop.setVisibility(View.VISIBLE)
-        slider.isEnabled = false
-        switch.isEnabled = false
+    /**
+     * метод start
+     * запускает таймер
+     * меняет текст кнопки на "pause".
+     */
+    private fun start(timer: Timer, v: View) {
+        lockScreen()
         thread {
             timer.start(timerValue)
             status = timer.getStatus()
             handler.post {
-                (v as Button).text = "pause"
+                (v as Button).setText(R.string.pause) //text = "pause"
             }
         }
     }
 
-    fun stopTimer(timer: Timer) {
+
+    /**
+     * Метод stopTimer
+     * останавливает таймер,
+     * сбрасывает его статус
+     * сбрасывает все элементы интерфейса.
+     */
+    private fun stopTimer(timer: Timer) {
         timer.stop()
         status = timer.getStatus()
         reset()
     }
 
-    fun pause(timer: Timer, v: View) {
+
+    /**
+     * Метод pause
+     * приостанавливает таймер
+     * меняет текст кнопки на "continue".
+     */
+    private fun pause(timer: Timer, v: View) {
         thread {
             handler.post {
-                (v as Button).text = "start"
+                (v as Button).setText(R.string.cont)   //text = "continue"
             }
         }
         timer.pause()
         status = timer.getStatus()
     }
 
-
-    fun reset() {
+    /**
+     * Метод reset переводит интерфейс в исходное состояние.
+     * сбрасывает таймер,
+     * делая слайдер и переключатель снова доступными,
+     * скрывает кнопку остановки
+     * меняет текст кнопки начала на "start".
+     */
+    private fun reset() {
         handler.post {
             slider.isEnabled = true
             switch.isEnabled = true
             buttonStop.setVisibility(View.GONE)
-            buttonStart.text = "start"
+            buttonStart.setText((R.string.start))   //text = "start"
             progressBar.progress = 0
+        }
+    }
+
+    /**
+     * Этот метод блокирует экран,
+     * делая слайдер и переключатель недоступными
+     * делая кнопку остановки видимой.
+     */
+    private fun lockScreen(){
+        handler.post {
+            buttonStop.setVisibility(View.VISIBLE)
+            slider.isEnabled = false
+            switch.isEnabled = false
         }
     }
 }

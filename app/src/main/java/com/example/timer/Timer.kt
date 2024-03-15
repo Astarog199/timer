@@ -31,7 +31,7 @@ class Timer(val binding: ActivityMainBinding) {
         thread.start()
     }
 
-    fun increaseValue(arg: Int) {
+    private fun increaseValue(arg: Int) {
         if (timer < arg && timer >= 0) {
             timer++
         } else {
@@ -39,7 +39,7 @@ class Timer(val binding: ActivityMainBinding) {
         }
     }
 
-    fun decreasingValue(arg: Int) {
+    private fun decreasingValue(arg: Int) {
         if (timer <= arg && timer > 0) {
             timer--
         } else {
@@ -47,13 +47,13 @@ class Timer(val binding: ActivityMainBinding) {
         }
     }
 
-    fun changeTimerText() {
+    private fun changeTimerText() {
         handler.post {
             binding.timer.text = timer.toString()
         }
     }
 
-    fun setTimerValue(arg: Int) {
+    private fun setTimerValue(arg: Int) {
         timer = if (!countdownMode) {
             0
         } else {
@@ -88,11 +88,11 @@ class Timer(val binding: ActivityMainBinding) {
         this.handler = handler
     }
 
-    fun reset(){
+    private fun reset(){
         status = false
         stop()
         handler.post {
-            binding.start.text = "start"
+            binding.start.setText(R.string.start)  //text = "start"
             binding.bar.isEnabled = true
             binding.switchTimer.isEnabled = true
             binding.stop.setVisibility(View.GONE)
