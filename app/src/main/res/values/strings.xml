@@ -5,5 +5,6 @@
     <string name="cont">Continue</string>
     <string name="countdown_timer">Countdown Timer</string>
     <string name="reset" >Reset</string>
-    <string name="mode">Change timer mode</string>
+    <string name="mode">Reverse</string>
+    <string name="minutes">Minutes</string>
 </resources>
